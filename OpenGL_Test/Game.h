@@ -1,4 +1,6 @@
 #pragma once
+#include "Sprite.h"
+
 #include <SDL.h>
 #include <glew.h>
 
@@ -17,6 +19,7 @@ class Game
 	int _screenWidth;
 	int _screenHeight;
 	GameState _gameState;
+	Sprite _sprite;
 
 	void init();
 	void handleEvents();
