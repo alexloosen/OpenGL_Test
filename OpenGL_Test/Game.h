@@ -21,5 +21,6 @@ class Game
 	void init();
 	void handleEvents();
 	void gameLoop();
+	void render();
 };
 
