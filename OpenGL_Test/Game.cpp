@@ -49,6 +49,8 @@ void Game::init()
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	glClearColor(0.0f, 1.0f, 0.0f, 1.0);
+	//glEnable(GL_BLEND);
+	//glBlendFunct(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	initShaders();
 }
 

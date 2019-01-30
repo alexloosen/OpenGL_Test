@@ -15,6 +15,11 @@ GLSLProgram::~GLSLProgram()
 
 void GLSLProgram::compileShaders(const std::string & vertexShaderFilePath, const std::string & fragmentShaderFilePath)
 {
+	// Vertex and fragment shaders are successfully compiled.
+	// Now time to link them together into a program.
+	// Get a program object.
+	_programID = glCreateProgram();
+
 	_vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	if (_vertexShaderID == 0)
 	{
@@ -31,11 +36,6 @@ void GLSLProgram::compileShaders(const std::string & vertexShaderFilePath, const
 
 void GLSLProgram::linkShaders()
 {
-	// Vertex and fragment shaders are successfully compiled.
-	// Now time to link them together into a program.
-	// Get a program object.
-	_programID = glCreateProgram();
-
 	// Attach our shaders to our program
 	glAttachShader(_programID, _vertexShaderID);
 	glAttachShader(_programID, _fragmentShaderID);
@@ -114,22 +114,22 @@ void GLSLProgram::compileShader(const std::string filePath, GLuint id)
 	vertexFile.close();
 
 	const char* contentsPtr = fileContents.c_str();
-	glShaderSource(_vertexShaderID, 1, &contentsPtr, nullptr);
+	glShaderSource(id, 1, &contentsPtr, nullptr);
 
-	glCompileShader(_vertexShaderID);
+	glCompileShader(id);
 
 	GLint success = 0;
-	glGetShaderiv(_vertexShaderID, GL_COMPILE_STATUS, &success);
+	glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 
 	if (success == GL_FALSE)
 	{
 		GLint maxLength = 0;
-		glGetShaderiv(_vertexShaderID, GL_INFO_LOG_LENGTH, &maxLength);
+		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
 
 		std::vector<char> errorLog(maxLength);
-		glGetShaderInfoLog(_vertexShaderID, maxLength, &maxLength, &errorLog[0]);
+		glGetShaderInfoLog(id, maxLength, &maxLength, &errorLog[0]);
 
-		glDeleteShader(_vertexShaderID);
+		glDeleteShader(id);
 
 		std::printf("%s\n", &(errorLog[0]));
 		fatalError("Shader " + filePath + " failed to compile!");
