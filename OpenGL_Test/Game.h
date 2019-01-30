@@ -1,5 +1,6 @@
 #pragma once
 #include "Sprite.h"
+#include "GLSLProgram.h"
 
 #include <SDL.h>
 #include <glew.h>
@@ -21,7 +22,10 @@ class Game
 	GameState _gameState;
 	Sprite _sprite;
 
+	GLSLProgram _colorProgram;
+
 	void init();
+	void initShaders();
 	void handleEvents();
 	void gameLoop();
 	void render();
