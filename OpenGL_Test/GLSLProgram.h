@@ -16,6 +16,8 @@ class GLSLProgram
 	void use();
 	void unuse();
 
+	GLuint getUniformLocation(const std::string& uniformName);
+
 	private:
 	int _numAttributes;
 
