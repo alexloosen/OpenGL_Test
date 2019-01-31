@@ -1,6 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include "GLSLProgram.h"
+#include "GLTexture.h"
 
 #include <SDL.h>
 #include <glew.h>
@@ -21,6 +22,7 @@ class Game
 	int _screenHeight;
 	GameState _gameState;
 	Sprite _sprite;
+	GLTexture _playerTexture;
 
 	GLSLProgram _colorProgram;
 	float _time;
