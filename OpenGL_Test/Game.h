@@ -1,7 +1,8 @@
 #pragma once
-#include "Sprite.h"
-#include "GLSLProgram.h"
-#include "GLTexture.h"
+#include <C3Engine/GLSLProgram.h>
+#include <C3Engine/GLTexture.h>
+#include <C3Engine/Sprite.h>
+#include <C3Engine/Window.h>
 
 #include <SDL.h>
 #include <glew.h>
@@ -18,13 +19,13 @@ class Game
 	void run();
 
 	private:
-	SDL_Window* _window;
+	C3Engine::Window _window;
 	int _screenWidth;
 	int _screenHeight;
 	GameState _gameState;
-	std::vector<Sprite*> _sprites;
+	std::vector<C3Engine::Sprite*> _sprites;
 
-	GLSLProgram _colorProgram;
+	C3Engine::GLSLProgram _colorProgram;
 	float _time;
 
 	float _fps;

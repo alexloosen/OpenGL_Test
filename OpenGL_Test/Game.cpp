@@ -1,9 +1,10 @@
 #include "Game.h"
-#include "Errors.h"
+#include <C3Engine/C3Engine.h>
+#include <C3Engine/EngineError.h>
 #include <iostream>
 #include <string>
 
-Game::Game() : _screenHeight(768), _screenWidth(1024), _time(0), _window(nullptr), _gameState(GameState::PLAY), _maxFPS(200.0f)
+Game::Game() : _screenHeight(768), _screenWidth(1024), _time(0), _gameState(GameState::PLAY), _maxFPS(60.0f)
 {
 }
 
@@ -15,41 +16,17 @@ Game::~Game()
 void Game::run()
 {
 	init();
-	_sprites.push_back(new Sprite());
+	_sprites.push_back(new C3Engine::Sprite());
 	_sprites.back()->init(-1.0f, -1.0f, 1.0f, 1.0f, "..\\textures\\PNG\\CharacterRight_Standing.png");
-	_sprites.push_back(new Sprite());
+	_sprites.push_back(new C3Engine::Sprite());
 	_sprites.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "..\\textures\\PNG\\CharacterRight_Standing.png");
 	gameLoop();
 }
 
 void Game::init()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-
-	_window = SDL_CreateWindow("GameEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
-
-	if (!_window)
-	{
-		fatalError("SDL Window could not be created!");
-	}
-
-	SDL_GLContext glContext = SDL_GL_CreateContext(_window);
-	if (!glContext)
-	{
-		fatalError("SDL_GL context could not be created!");
-	}
-
-	GLenum error = glewInit();
-	if (error != GLEW_OK)
-	{
-		fatalError("Could not initialize glew!");
-	}
-
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	glClearColor(0.0f, 1.0f, 0.0f, 1.0);
-	//glEnable(GL_BLEND);
-	//glBlendFunct(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	C3Engine::init();
+	int test = _window.createWindow("Game Engine", _screenWidth, _screenHeight, 0);
 	initShaders();
 }
 
@@ -126,7 +103,7 @@ void Game::render()
 
 	_colorProgram.unuse();
 
-	SDL_GL_SwapWindow(_window);
+	_window.swapBuffer();
 }
 
 void Game::calculateFPS()
