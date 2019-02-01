@@ -62,9 +62,9 @@ void Sprite::init(float x, float y, float w, float h, std::string texturePath)
 		vertexData[i].color.a = 255;
 	}
 
-	vertexData[1].setColor(255, 0, 0, 255);
+	//vertexData[1].setColor(255, 0, 0, 255);
 
-	vertexData[4].setColor(0, 0, 255, 255);
+	//vertexData[4].setColor(0, 0, 255, 255);
 
 
 	// bind buffer

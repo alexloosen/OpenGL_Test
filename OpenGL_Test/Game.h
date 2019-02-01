@@ -27,10 +27,15 @@ class Game
 	GLSLProgram _colorProgram;
 	float _time;
 
+	float _fps;
+	float _frameTime;
+	float _maxFPS;
+
 	void init();
 	void initShaders();
 	void handleEvents();
 	void gameLoop();
 	void render();
+	void calculateFPS();
 };
 

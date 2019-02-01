@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-Game::Game() : _screenHeight(768), _screenWidth(1024), _time(0), _window(nullptr), _gameState(GameState::PLAY)
+Game::Game() : _screenHeight(768), _screenWidth(1024), _time(0), _window(nullptr), _gameState(GameState::PLAY), _maxFPS(200.0f)
 {
 }
 
@@ -19,11 +19,6 @@ void Game::run()
 	_sprites.back()->init(-1.0f, -1.0f, 1.0f, 1.0f, "..\\textures\\PNG\\CharacterRight_Standing.png");
 	_sprites.push_back(new Sprite());
 	_sprites.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "..\\textures\\PNG\\CharacterRight_Standing.png");
-	for (int i = 0; i < 1000; i++)
-	{
-		_sprites.push_back(new Sprite());
-		_sprites.back()->init(-1.0f, 0.0f, 1.0f, 1.0f, "..\\textures\\PNG\\CharacterRight_Standing.png");
-	}
 	gameLoop();
 }
 
@@ -89,9 +84,23 @@ void Game::gameLoop()
 {
 	while (_gameState != GameState::EXIT)
 	{
+		float startTicks = SDL_GetTicks();
 		handleEvents();
 		_time += 0.01;
 		render();
+		calculateFPS();
+		static int frameCount = 0;
+		frameCount++;
+		if (frameCount == 10)
+		{
+			std::cout << "FPS: " << (int)_fps << std::endl;
+			frameCount = 0;
+		}
+		float frameTicks = SDL_GetTicks() - startTicks;
+		if (1000.0f / _maxFPS > frameTicks)
+		{
+			SDL_Delay(1000.0f / _maxFPS - frameTicks);
+		}
 	}
 }
 
@@ -118,4 +127,48 @@ void Game::render()
 	_colorProgram.unuse();
 
 	SDL_GL_SwapWindow(_window);
+}
+
+void Game::calculateFPS()
+{
+	static const int NUM_SAMPLES = 10;
+	static float frameTimes[NUM_SAMPLES];
+	static int currentFrame = 0;
+
+	float currentTicks;
+	int count;
+
+	static float prevTicks = SDL_GetTicks();
+	currentTicks = SDL_GetTicks();
+	_frameTime = currentTicks - prevTicks;
+
+	frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
+
+	prevTicks = currentTicks;
+
+	currentFrame++;
+	if (currentFrame < NUM_SAMPLES)
+	{
+		count = currentFrame;
+	}
+	else
+	{
+		count = NUM_SAMPLES;
+	}
+
+	float frameTimeAverage = 0;
+	for (int i = 0; i < count; i++)
+	{
+		frameTimeAverage += frameTimes[i];
+	}
+	frameTimeAverage /= count;
+
+	if (frameTimeAverage > 0)
+	{
+		_fps = 1000.0f / frameTimeAverage;
+	}
+	else
+	{
+		_fps = 0;
+	}
 }
