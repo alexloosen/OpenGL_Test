@@ -5,6 +5,7 @@
 
 #include <SDL.h>
 #include <glew.h>
+#include <vector>
 
 enum class GameState{PLAY,EXIT};
 
@@ -21,8 +22,7 @@ class Game
 	int _screenWidth;
 	int _screenHeight;
 	GameState _gameState;
-	Sprite _sprite;
-	GLTexture _playerTexture;
+	std::vector<Sprite*> _sprites;
 
 	GLSLProgram _colorProgram;
 	float _time;
