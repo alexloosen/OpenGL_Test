@@ -6,6 +6,7 @@
 
 Game::Game() : _screenHeight(768), _screenWidth(1024), _time(0), _gameState(GameState::PLAY), _maxFPS(60.0f)
 {
+	_camera.init(_screenWidth, _screenHeight);
 }
 
 
@@ -17,9 +18,9 @@ void Game::run()
 {
 	init();
 	_sprites.push_back(new C3Engine::Sprite());
-	_sprites.back()->init(-1.0f, -1.0f, 1.0f, 1.0f, "..\\textures\\PNG\\CharacterRight_Standing.png");
+	_sprites.back()->init(0.0f, 0.0f, _screenWidth / 2, _screenWidth / 2, "..\\textures\\PNG\\CharacterRight_Standing.png");
 	_sprites.push_back(new C3Engine::Sprite());
-	_sprites.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "..\\textures\\PNG\\CharacterRight_Standing.png");
+	_sprites.back()->init(_screenWidth / 2, 0.0f, _screenWidth / 2, _screenWidth / 2, "..\\textures\\PNG\\CharacterRight_Standing.png");
 	gameLoop();
 }
 
@@ -43,16 +44,43 @@ void Game::handleEvents()
 {
 	SDL_Event e;
 
+	const float CAMERA_SPEED = 20.0f;
+	const float SCALE_SPEED = 0.1f;
+
 	while (SDL_PollEvent(&e))
 	{
 		switch (e.type)
 		{
 		case SDL_QUIT:
-		_gameState = GameState::EXIT;
-		break;
+			_gameState = GameState::EXIT;
+			break;
 		case SDL_MOUSEMOTION:
-		//std::cout << "X: " << e.motion.x << " Y: " << e.motion.y << std::endl;
-		break;
+			//std::cout << "X: " << e.motion.x << " Y: " << e.motion.y << std::endl;
+			break;
+		case SDL_KEYDOWN:
+			switch (e.key.keysym.sym)
+			{
+			case SDLK_w:
+				_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+				break;
+			case SDLK_s:
+				_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+				break;
+			case SDLK_a:
+				_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+				break;
+			case SDLK_d:
+				_camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+				break;
+			case SDLK_q:
+				_camera.setScale(_camera.getScale() + SCALE_SPEED);
+				break;
+			case SDLK_e:
+				_camera.setScale(_camera.getScale() - SCALE_SPEED);
+				break;
+
+			}
+			break;
 		}
 	}
 }
@@ -63,7 +91,10 @@ void Game::gameLoop()
 	{
 		float startTicks = SDL_GetTicks();
 		handleEvents();
-		_time += 0.01;
+		_time += 0.1;
+
+		_camera.update();
+
 		render();
 		calculateFPS();
 		static int frameCount = 0;
@@ -93,6 +124,11 @@ void Game::render()
 
 	GLuint timeLocation = _colorProgram.getUniformLocation("time");
 	glUniform1f(timeLocation, _time);
+
+	//camera
+	GLuint pLocation = _colorProgram.getUniformLocation("P");
+	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
 	for (int i = 0; i < _sprites.size(); i++)
 	{

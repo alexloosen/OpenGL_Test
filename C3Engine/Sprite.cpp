@@ -56,10 +56,17 @@ namespace C3Engine
 		vertexData[5].setPosition(_x + _w, _y + h);
 		vertexData[5].setUV(1.0f, 1.0f);
 
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			vertexData[i].color.r = 0;
 			vertexData[i].color.g = 255;
+			vertexData[i].color.b = 0;
+			vertexData[i].color.a = 255;
+		}
+		for (int i = 3; i < 6; i++)
+		{
+			vertexData[i].color.r = 255;
+			vertexData[i].color.g = 0;
 			vertexData[i].color.b = 0;
 			vertexData[i].color.a = 255;
 		}
@@ -85,7 +92,7 @@ namespace C3Engine
 
 		glEnableVertexAttribArray(0);
 
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, _position));
 		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 

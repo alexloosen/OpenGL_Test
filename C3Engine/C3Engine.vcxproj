@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="C3Engine.h" />
+    <ClInclude Include="Camera2D.h" />
     <ClInclude Include="EngineError.h" />
     <ClInclude Include="GLSLProgram.h" />
     <ClInclude Include="GLTexture.h" />
@@ -167,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3Engine.cpp" />
+    <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="EngineError.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
     <ClCompile Include="ImageLoader.cpp" />

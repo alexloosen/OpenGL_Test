@@ -25,7 +25,7 @@ namespace C3Engine
 
 	struct Vertex
 	{
-		Position position;
+		Position _position;
 		Color color;
 		UV uv;
 
@@ -39,8 +39,8 @@ namespace C3Engine
 
 		void setPosition(float x, float y)
 		{
-			position.x = x;
-			position.y = y;
+			_position.x = x;
+			_position.y = y;
 		}
 
 		void setUV(float u, float v)

@@ -3,6 +3,7 @@
 #include <C3Engine/GLTexture.h>
 #include <C3Engine/Sprite.h>
 #include <C3Engine/Window.h>
+#include <C3Engine/Camera2D.h>
 
 #include <SDL.h>
 #include <glew.h>
@@ -26,6 +27,8 @@ class Game
 	std::vector<C3Engine::Sprite*> _sprites;
 
 	C3Engine::GLSLProgram _colorProgram;
+	C3Engine::Camera2D _camera;
+
 	float _time;
 
 	float _fps;
