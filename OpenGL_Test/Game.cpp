@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <C3Engine/C3Engine.h>
 #include <C3Engine/EngineError.h>
+#include <C3Engine/ResourceManager.h>
 #include <iostream>
 #include <string>
 
@@ -17,10 +18,10 @@ Game::~Game()
 void Game::run()
 {
 	init();
-	_sprites.push_back(new C3Engine::Sprite());
-	_sprites.back()->init(0.0f, 0.0f, _screenWidth / 2, _screenWidth / 2, "..\\textures\\PNG\\CharacterRight_Standing.png");
-	_sprites.push_back(new C3Engine::Sprite());
-	_sprites.back()->init(_screenWidth / 2, 0.0f, _screenWidth / 2, _screenWidth / 2, "..\\textures\\PNG\\CharacterRight_Standing.png");
+	//_sprites.push_back(new C3Engine::Sprite());
+	//_sprites.back()->init(0.0f, 0.0f, _screenWidth / 2, _screenWidth / 2, "..\\textures\\PNG\\CharacterRight_Standing.png");
+	//_sprites.push_back(new C3Engine::Sprite());
+	//_sprites.back()->init(_screenWidth / 2, 0.0f, _screenWidth / 2, _screenWidth / 2, "..\\textures\\PNG\\CharacterRight_Standing.png");
 	gameLoop();
 }
 
@@ -29,6 +30,7 @@ void Game::init()
 	C3Engine::init();
 	int test = _window.createWindow("Game Engine", _screenWidth, _screenHeight, 0);
 	initShaders();
+	_spriteBatch.init();
 }
 
 void Game::initShaders()
@@ -130,10 +132,18 @@ void Game::render()
 	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
-	for (int i = 0; i < _sprites.size(); i++)
-	{
-		_sprites[i]->draw();
-	}
+	_spriteBatch.begin();
+	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
+	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
+	C3Engine::GLTexture texture = C3Engine::ResourceManager::getTexture("..\\textures\\PNG\\CharacterRight_Standing.png");
+	C3Engine::Color color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	color.a = 255;
+	_spriteBatch.draw(pos,uv,texture.id, 0.0f, color);
+	_spriteBatch.end();
+	_spriteBatch.renderBatch();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 

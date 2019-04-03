@@ -4,6 +4,7 @@
 #include <C3Engine/Sprite.h>
 #include <C3Engine/Window.h>
 #include <C3Engine/Camera2D.h>
+#include <C3Engine/SpriteBatch.h>
 
 #include <SDL.h>
 #include <glew.h>
@@ -24,10 +25,10 @@ class Game
 	int _screenWidth;
 	int _screenHeight;
 	GameState _gameState;
-	std::vector<C3Engine::Sprite*> _sprites;
 
 	C3Engine::GLSLProgram _colorProgram;
 	C3Engine::Camera2D _camera;
+	C3Engine::SpriteBatch _spriteBatch;
 
 	float _time;
 
