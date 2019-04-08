@@ -94,12 +94,12 @@ namespace C3Engine
 			{
 				_renderBatches.back().numVertices += 6;
 			}
-			vertices[cv++] = _glyphs[0]->topLeft;
-			vertices[cv++] = _glyphs[0]->bottomLeft;
-			vertices[cv++] = _glyphs[0]->bottomRight;
-			vertices[cv++] = _glyphs[0]->bottomRight;
-			vertices[cv++] = _glyphs[0]->topRight;
-			vertices[cv++] = _glyphs[0]->topLeft;
+			vertices[cv++] = _glyphs[cg]->topLeft;
+			vertices[cv++] = _glyphs[cg]->bottomLeft;
+			vertices[cv++] = _glyphs[cg]->bottomRight;
+			vertices[cv++] = _glyphs[cg]->bottomRight;
+			vertices[cv++] = _glyphs[cg]->topRight;
+			vertices[cv++] = _glyphs[cg]->topLeft;
 			offset += 6;
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);

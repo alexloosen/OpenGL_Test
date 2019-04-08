@@ -4,8 +4,9 @@
 #include <C3Engine/ResourceManager.h>
 #include <iostream>
 #include <string>
+#include <math.h>
 
-Game::Game() : _screenHeight(768), _screenWidth(1024), _time(0), _gameState(GameState::PLAY), _maxFPS(60.0f)
+Game::Game() : _screenHeight(768), _screenWidth(1366), _time(0), _gameState(GameState::PLAY), _maxFPS(60.0f)
 {
 	_camera.init(_screenWidth, _screenHeight);
 }
@@ -93,7 +94,7 @@ void Game::gameLoop()
 	{
 		float startTicks = SDL_GetTicks();
 		handleEvents();
-		_time += 0.1;
+		_time += 0.01;
 
 		_camera.update();
 
@@ -133,15 +134,29 @@ void Game::render()
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
 	_spriteBatch.begin();
-	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
+	glm::vec4 pos(0.0f, 0.0f, 50, 50);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	C3Engine::GLTexture texture = C3Engine::ResourceManager::getTexture("..\\textures\\PNG\\CharacterRight_Standing.png");
+	C3Engine::GLTexture texture;
+	C3Engine::GLTexture water = C3Engine::ResourceManager::getTexture("..\\textures\\PNG\\water.png");
+	if (sin(4*_time) > 0.5)
+	{
+		texture = C3Engine::ResourceManager::getTexture("..\\textures\\PNG\\CharacterRight_Standing_.png");
+	}
+	else
+	{
+		texture = C3Engine::ResourceManager::getTexture("..\\textures\\PNG\\CharacterLeft_Standing.png");
+	}
 	C3Engine::Color color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
-	_spriteBatch.draw(pos,uv,texture.id, 0.0f, color);
+	_spriteBatch.draw(pos, uv, water.id, 0.0f, color);
+	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+	_spriteBatch.draw(pos + glm::vec4(0, 50, 0, 0), uv, texture.id, 0.0f, color);
+	_spriteBatch.draw(pos + glm::vec4(50, 50, 0, 0), uv, texture.id, 0.0f, color);
+	_spriteBatch.draw(pos + glm::vec4(100, 50, 0, 0), uv, texture.id, 0.0f, color);
+	_spriteBatch.draw(pos + glm::vec4(150, 50, 0, 0), uv, texture.id, 0.0f, color);
 	_spriteBatch.end();
 	_spriteBatch.renderBatch();
 

@@ -59,13 +59,13 @@ namespace C3Engine
 		for (int i = 0; i < 3; i++)
 		{
 			vertexData[i].color.r = 0;
-			vertexData[i].color.g = 255;
+			vertexData[i].color.g = 0;
 			vertexData[i].color.b = 0;
 			vertexData[i].color.a = 255;
 		}
 		for (int i = 3; i < 6; i++)
 		{
-			vertexData[i].color.r = 255;
+			vertexData[i].color.r = 0;
 			vertexData[i].color.g = 0;
 			vertexData[i].color.b = 0;
 			vertexData[i].color.a = 255;
